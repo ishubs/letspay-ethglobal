@@ -4,7 +4,7 @@
   "type": "module",
   "main": "ens-namespace.ts",
   "scripts": {
-      "build": "bun build ens-namespace.ts --outdir dist --target bun",
+      "build": "bun run build.ts",
       "start": "bun run ens-namespace.ts",
       "dev": "bun run ens-namespace.ts"
   },
