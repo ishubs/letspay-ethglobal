@@ -4,10 +4,10 @@
   "type": "module",
   "main": "ens-namespace.ts",
   "scripts": {
-      "build": "bun run build.ts",
-      "start": "bun run ens-namespace.ts",
-      "dev": "bun run ens-namespace.ts"
-  },
+  "build": "tsc",
+  "start": "node dist/index.js",
+  "dev": "ts-node src/index.ts"
+},
   "dependencies": {
       "@selfxyz/core": "^1.1.0-beta.3",
       "@thenamespace/offchain-manager": "^1.0.5",
