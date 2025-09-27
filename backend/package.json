@@ -5,7 +5,7 @@
   "main": "ens-namespace.ts",
   "scripts": {
   "build": "tsc ens-namespace.ts --esModuleInterop",
-  "start": "node dist/ens-namespace.js",
+  "start": "node ens-namespace.js",
   "dev": "ts-node ens-namespace.ts"
 },
   "dependencies": {
