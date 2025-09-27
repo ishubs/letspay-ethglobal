@@ -74,13 +74,15 @@ export function useLetsPay() {
           setEnsName(data.subnames[0].name);
           try {
             localStorage.setItem("letspay_username", data.subnames[0].name);
-          } catch {}
+          } catch (error) {
+            console.warn("Failed to save username to localStorage:", error);
+          }
         } else {
           setEnsPromptNeeded(true);
         }
       }
-    } catch {
-      console.log("Error checking ENS subname");
+    } catch (error) {
+      console.log("Error checking ENS subname:", error);
     }
   }, []);
 
@@ -187,7 +189,9 @@ export function useLetsPay() {
           setIsVerified(true);
           return;
         }
-      } catch {}
+      } catch (error) {
+        console.warn("Failed to check verification status:", error);
+      }
       const res = await fetch(`http://localhost:4000/verification-status/${account}`);
       if (!res.ok) return;
       const data = await res.json();
@@ -215,7 +219,7 @@ export function useLetsPay() {
         const message =
           (typeof err === "object" &&
             err !== null &&
-            (("reason" in err && typeof (err as { reason?: string }).reason === "string" && (error as { reason: string }).reason) ||
+            (("reason" in err && typeof (err as { reason?: string }).reason === "string" && (err as { reason: string }).reason) ||
               ("data" in err &&
                 typeof (err as { data?: { message?: string } }).data?.message === "string" &&
                 (err as { data: { message: string } }).data.message) ||
@@ -238,7 +242,9 @@ export function useLetsPay() {
       try {
         const cached = localStorage.getItem("letspay_username");
         if (cached) setEnsName(cached);
-      } catch {}
+      } catch (error) {
+        console.warn("Failed to load cached username:", error);
+      }
       (async () => {
         try {
           const res = await fetch(`http://localhost:3000/ens-subnames/${account}`);
@@ -248,12 +254,16 @@ export function useLetsPay() {
               setEnsName(data.subnames[0].name);
               try {
                 localStorage.setItem("letspay_username", data.subnames[0].name);
-              } catch {}
+              } catch (error) {
+                console.warn("Failed to save username to localStorage:", error);
+              }
             } else {
               setEnsPromptNeeded(true);
             }
           }
-        } catch {}
+        } catch (error) {
+          console.warn("Failed to check ENS subname:", error);
+        }
       })();
     }
   }, [contract, account, loadCredit, loadPending, loadSignedUp, loadVerificationStatus]);
@@ -272,7 +282,9 @@ export function useLetsPay() {
           const prov = new ethers.BrowserProvider(ethProvider as unknown as ethers.Eip1193Provider);
           try {
             await prov.send("wallet_switchEthereumChain", [{ chainId: "0x221" }]);
-          } catch {}
+          } catch (error) {
+            console.error("Failed to switch Ethereum chain to 0x221:", error);
+          }
           const s = await prov.getSigner();
           const addr = accounts[0];
           const c = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, s);
@@ -283,9 +295,13 @@ export function useLetsPay() {
           try {
             const su: boolean = await c.signedUp(addr);
             setIsSignedUp(Boolean(su));
-          } catch {}
+          } catch (error) {
+            console.warn("Failed to check signup status:", error);
+          }
         }
-      } catch {}
+      } catch (error) {
+        console.warn("Failed to reconnect wallet:", error);
+      }
     }
 
     silentReconnect();
@@ -298,9 +314,15 @@ export function useLetsPay() {
         setContract(null);
         setIsSignedUp(false);
         setEnsName("");
-        try { localStorage.removeItem("letspay_connected"); } catch {}
-        try { localStorage.removeItem("letspay_verified"); } catch {}
-        try { localStorage.removeItem("letspay_username"); } catch {}
+        try { localStorage.removeItem("letspay_connected"); } catch (error) {
+          console.warn("Failed to remove connected flag:", error);
+        }
+        try { localStorage.removeItem("letspay_verified"); } catch (error) {
+          console.warn("Failed to remove verified flag:", error);
+        }
+        try { localStorage.removeItem("letspay_username"); } catch (error) {
+          console.warn("Failed to remove username:", error);
+        }
       } else {
         silentReconnect();
       }
@@ -346,7 +368,7 @@ export function useLetsPay() {
       body: JSON.stringify({ label: label.toLowerCase(), owner: account }),
     });
     if (!res.ok) throw new Error("Failed to register ENS subname");
-    const data = (await res.json()) as { success?: boolean; subname?: any };
+    const data = (await res.json()) as { success?: boolean; subname?: { name: string; owner: string } };
     console.log(data,  " :data")
     if (data.success) {
       setEnsName(label);
@@ -382,7 +404,9 @@ export function useLetsPay() {
     loadVerificationStatus,
     markVerified: () => {
       setIsVerified(true);
-      try { localStorage.setItem("letspay_verified", "1"); } catch {}
+      try { localStorage.setItem("letspay_verified", "1"); } catch (error) {
+        console.warn("Failed to save verification status:", error);
+      }
     },
   };
 }
