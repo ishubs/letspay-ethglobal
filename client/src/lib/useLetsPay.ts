@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "./contract";
+import { config } from "./config";
 
 type EthereumProvider = {
   request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
@@ -67,7 +68,7 @@ export function useLetsPay() {
 
     // ✅ Offchain ENS subname check
     try {
-      const checkRes = await fetch(`http://localhost:3000/ens-subnames/${addr}`);
+      const checkRes = await fetch(`${config.API_BASE_URL}/ens-subnames/${addr}`);
       if (checkRes.ok) {
         const data = (await checkRes.json()) as { subnames?: { name: string }[] };
         if (data?.subnames && data.subnames.length > 0) {
@@ -192,7 +193,7 @@ export function useLetsPay() {
       } catch (error) {
         console.warn("Failed to check verification status:", error);
       }
-      const res = await fetch(`http://localhost:4000/verification-status/${account}`);
+      const res = await fetch(`${config.VERIFICATION_BASE_URL}/verification-status/${account}`);
       if (!res.ok) return;
       const data = await res.json();
       setIsVerified(Boolean(data?.verified));
@@ -247,7 +248,7 @@ export function useLetsPay() {
       }
       (async () => {
         try {
-          const res = await fetch(`http://localhost:3000/ens-subnames/${account}`);
+          const res = await fetch(`${config.API_BASE_URL}/ens-subnames/${account}`);
           if (res.ok) {
             const data = (await res.json()) as { subnames?: { name: string }[] };
             if (data?.subnames && data.subnames.length > 0) {
@@ -354,7 +355,7 @@ export function useLetsPay() {
 
   const checkEnsAvailability = async (label: string) => {
     if (!label) return false;
-    const res = await fetch(`http://localhost:3000/ens-availability/${encodeURIComponent(label.toLowerCase())}`);
+    const res = await fetch(`${config.API_BASE_URL}/ens-availability/${encodeURIComponent(label.toLowerCase())}`);
     if (!res.ok) return false;
     const data = (await res.json()) as { available?: boolean };
     return Boolean(data?.available);
@@ -362,7 +363,7 @@ export function useLetsPay() {
 
   const registerEns = async (label: string) => {
     if (!account) throw new Error("Not connected");
-    const res = await fetch("http://localhost:3000/register-subname", {
+    const res = await fetch(`${config.API_BASE_URL}/register-subname`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ label: label.toLowerCase(), owner: account }),
