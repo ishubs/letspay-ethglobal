@@ -2,9 +2,11 @@
   "name": "letspay-backend",
   "version": "1.0.0",
   "type": "module",
-  "main": "server.ts",
+  "main": "ens-namespace.ts",
   "scripts": {
-      "start": "ts-node server.ts"
+      "build": "bun build ens-namespace.ts --outdir dist --target bun",
+      "start": "bun run ens-namespace.ts",
+      "dev": "bun run ens-namespace.ts"
   },
   "dependencies": {
       "@selfxyz/core": "^1.1.0-beta.3",
