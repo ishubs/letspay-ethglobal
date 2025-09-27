@@ -4,9 +4,9 @@
   "type": "module",
   "main": "ens-namespace.ts",
   "scripts": {
-  "build": "tsc",
-  "start": "node dist/index.js",
-  "dev": "ts-node src/index.ts"
+  "build": "tsc ens-namespace.ts --esModuleInterop",
+  "start": "node dist/ens-namespace.js",
+  "dev": "ts-node ens-namespace.ts"
 },
   "dependencies": {
       "@selfxyz/core": "^1.1.0-beta.3",
