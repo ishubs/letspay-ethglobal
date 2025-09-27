@@ -1,0 +1,4 @@
+[build]
+entrypoints = ["ens-namespace.ts"]
+outdir = "dist"
+target = "bun"
