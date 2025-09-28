@@ -36,7 +36,7 @@ export default function Verify() {
           <div className="mt-6 flex justify-center">
             <div className="flex gap-3">
               <Button variant="outline" className="!text-white" onClick={() => navigate("/")}>Back to Home</Button>
-              <Button onClick={() => { markVerified(); navigate("/"); }}>Skip for now</Button>
+              {/* <Button onClick={() => { markVerified(); navigate("/"); }}>Skip for now</Button> */}
             </div>
           </div>
         </div>
