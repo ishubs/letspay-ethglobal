@@ -193,10 +193,8 @@ export function useLetsPay() {
       } catch (error) {
         console.warn("Failed to check verification status:", error);
       }
-      const res = await fetch(`${config.VERIFICATION_BASE_URL}/verification-status/${account}`);
-      if (!res.ok) return;
-      const data = await res.json();
-      setIsVerified(Boolean(data?.verified));
+      // Verification status is now handled entirely through localStorage and Self Protocol
+      // No external API call needed
     } catch {
       /* ignore */
     }

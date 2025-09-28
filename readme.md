@@ -6,7 +6,7 @@ LetsPay makes splitting bills seamless, secure, and user-friendly. Users no long
 
 ---
 
-## 🚀 Core Idea
+## Core Idea
 
 - **Web3 First:**  
   Leveraging decentralized identities and payments for trustless group transactions.
@@ -31,7 +31,7 @@ LetsPay makes splitting bills seamless, secure, and user-friendly. Users no long
 
 ---
 
-## 📦 Monorepo Structure
+## Monorepo Structure
 
 The repo contains **four key projects**:
 
